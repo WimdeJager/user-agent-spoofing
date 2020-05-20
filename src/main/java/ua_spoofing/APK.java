@@ -1,9 +1,11 @@
 package ua_spoofing;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -43,6 +45,11 @@ public class APK {
 
         String cmd = "jadx -d " + locSrc + " " + locApk;
         System.out.println("Command: " + cmd);
+        if (apkDir.exists()) {
+            System.out.println("[INFO] output directory already exists! " +
+                    "Deleting...");
+            FileUtils.deleteDirectory(apkDir);
+        }
         
         Process pr = rt.exec("cmd /c " + cmd);
 
