@@ -3,7 +3,7 @@ package ua_spoofing;
 import java.io.IOException;
 
 /**
- * Created by wimde on 18-5-2020.
+ * Main class.
  */
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {

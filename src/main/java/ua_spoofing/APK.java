@@ -11,14 +11,30 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class APK {
 
-    private String locApk;
-    private String locSrc;
+    /**
+     * Location of (path to) the apk file
+     */
+    private File apkFile;
+    /**
+     * Location of (path to) the decompiled source code. If null, the application
+     * has not been decompiled
+     */
+    private File apkDir;
 
+    /**
+     * Constructor
+     * @param locationAPK the location of the apk file
+     */
     public APK(String locationAPK) {
         this.locApk = locationAPK;
         this.locSrc = null;
     }
 
+    /**
+     * Decompiles the apk file, using JADX.
+     * @throws IOException TODO
+     * @throws InterruptedException TODO
+     */
     public void decompile() throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
 
