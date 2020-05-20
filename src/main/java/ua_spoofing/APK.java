@@ -24,12 +24,19 @@ public class APK {
     private File dir;
 
     /**
+     * Name of the file (without path)
+     */
+    private String name;
+
+    /**
      * Constructor
      * @param locationAPK the location of the apk file
      */
     public APK(String locationAPK) {
         this.file = new File(locationAPK);
         this.dir  = null;
+        this.name = FilenameUtils.getName(file.getPath());
+        System.out.println(name);
     }
 
     /**
