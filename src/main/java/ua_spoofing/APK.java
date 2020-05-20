@@ -28,8 +28,8 @@ public class APK {
      * @param locationAPK the location of the apk file
      */
     public APK(String locationAPK) {
-        this.locApk = locationAPK;
-        this.locSrc = null;
+        this.apkFile = new File(locationAPK);
+        this.apkDir = null;
     }
 
     /**
@@ -40,16 +40,21 @@ public class APK {
     public void decompile() throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
 
-        locSrc = FilenameUtils.getFullPath(locApk) + "\\output";
-        System.out.println("Src location: " + locSrc);
+        apkDir = new File(FilenameUtils.getFullPath(apkFile.getPath())
+                + "output");
 
-        String cmd = "jadx -d " + locSrc + " " + locApk;
-        System.out.println("Command: " + cmd);
+        String cmd = "jadx -d " + apkDir.getPath() + " " + apkFile.getPath();
+
+        System.out.println("[INFO] Apk location: " + apkFile.getPath());
+        System.out.println("[INFO] Output location: " + apkDir.getPath());
+
         if (apkDir.exists()) {
             System.out.println("[INFO] output directory already exists! " +
                     "Deleting...");
             FileUtils.deleteDirectory(apkDir);
         }
+
+        System.out.println("[INFO] Decompiling, starting JADX");
         
         Process pr = rt.exec("cmd /c " + cmd);
 
@@ -63,7 +68,7 @@ public class APK {
 
         int exit = pr.waitFor();
 
-        System.out.println("Exited with code " + exit);
+        System.out.println("[INFO] Exited with code " + exit);
     }
 
 }
