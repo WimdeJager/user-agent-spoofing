@@ -71,4 +71,20 @@ public class APK {
         System.out.println("[INFO] Exited with code " + exit);
     }
 
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public File getDir() {
+        return dir;
+    }
+
+    public void setDir(File dir) {
+        this.dir = dir;
+    }
+
 }
