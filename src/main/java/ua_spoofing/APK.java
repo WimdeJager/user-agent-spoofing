@@ -16,20 +16,20 @@ public class APK {
     /**
      * Location of (path to) the apk file
      */
-    private File apkFile;
+    private File file;
     /**
      * Location of (path to) the decompiled source code. If null, the application
      * has not been decompiled
      */
-    private File apkDir;
+    private File dir;
 
     /**
      * Constructor
      * @param locationAPK the location of the apk file
      */
     public APK(String locationAPK) {
-        this.apkFile = new File(locationAPK);
-        this.apkDir = null;
+        this.file = new File(locationAPK);
+        this.dir  = null;
     }
 
     /**
@@ -40,23 +40,22 @@ public class APK {
     public void decompile() throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
 
-        apkDir = new File(FilenameUtils.getFullPath(apkFile.getPath())
+        dir = new File(FilenameUtils.getFullPath(file.getPath())
                 + "output");
 
-        String cmd = "jadx -d " + apkDir.getPath() + " " + apkFile.getPath();
+        System.out.println("[INFO] Apk location: " + file.getPath());
+        System.out.println("[INFO] Output location: " + dir.getPath());
 
-        System.out.println("[INFO] Apk location: " + apkFile.getPath());
-        System.out.println("[INFO] Output location: " + apkDir.getPath());
-
-        if (apkDir.exists()) {
+        if (dir.exists()) {
             System.out.println("[INFO] output directory already exists! " +
                     "Deleting...");
-            FileUtils.deleteDirectory(apkDir);
+            FileUtils.deleteDirectory(dir);
         }
 
         System.out.println("[INFO] Decompiling, starting JADX");
         
-        Process pr = rt.exec("cmd /c " + cmd);
+        Process pr = rt.exec("cmd /c jadx -d " + dir.getPath() + " "
+                + file.getPath());
 
         String line;
         BufferedReader input =
