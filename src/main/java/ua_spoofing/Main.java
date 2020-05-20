@@ -10,9 +10,11 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length == 0) {
-            System.err.println("ERROR --- Provide an APK file!");
+            System.err.println("[ERROR] Provide an APK file!");
+            System.exit(1);
         } else if (args.length > 1) {
-            System.err.println("ERROR --- More than one argument given");
+            System.err.println("[ERROR] More than one argument given");
+            System.exit(1);
         }
 
         APK apk = new APK(args[0]);
