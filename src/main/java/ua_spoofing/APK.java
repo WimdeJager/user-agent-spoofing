@@ -9,14 +9,15 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * Class that holds information about an apk file
+ * Class that holds information about an APK file
  */
 public class APK {
 
     /**
-     * Location of (path to) the apk file
+     * Location of (path to) the APK file
      */
     private File file;
+
     /**
      * Location of (path to) the decompiled source code. If null, the application
      * has not been decompiled
@@ -30,17 +31,17 @@ public class APK {
 
     /**
      * Constructor
-     * @param locationAPK the location of the apk file
+     * @param location the location of the APK file
      */
-    public APK(String locationAPK) {
-        this.file = new File(locationAPK);
+    public APK(String location) {
+        this.file = new File(location);
         this.dir  = null;
         this.name = FilenameUtils.getName(file.getPath());
         System.out.println(name);
     }
 
     /**
-     * Decompiles the apk file, using JADX.
+     * Decompiles the APK file, using JADX.
      * @throws IOException TODO
      * @throws InterruptedException TODO
      */
@@ -50,7 +51,7 @@ public class APK {
         dir = new File(FilenameUtils.getFullPath(file.getPath())
                 + "output");
 
-        System.out.println("[INFO] Apk location: " + file.getPath());
+        System.out.println("[INFO] APK location: " + file.getPath());
         System.out.println("[INFO] Output location: " + dir.getPath());
 
         if (dir.exists()) {
@@ -60,7 +61,9 @@ public class APK {
         }
 
         System.out.println("[INFO] Decompiling, starting JADX");
-        
+        System.out.println("[INFO] This may take a while, depending on the size" +
+                " of the APK");
+
         Process pr = rt.exec("cmd /c jadx -d " + dir.getPath() + " "
                 + file.getPath());
 
@@ -91,6 +94,14 @@ public class APK {
 
     public void setDir(File dir) {
         this.dir = dir;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
