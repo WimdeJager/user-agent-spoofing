@@ -10,8 +10,11 @@ by k3170makan
 
 from sys import argv
 from sys import exit
+from sys import path
 
 import os
+
+print path
 
 from androguard.core.bytecodes import apk
 from androguard.core.bytecodes import dvm
