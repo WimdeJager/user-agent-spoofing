@@ -1,4 +1,4 @@
 .idea/*
 *.iml
 target/*
-src/main/java/ua_spoofing/python/__pycache__/decompiler.cpython-36.pyc
+*.pyc
