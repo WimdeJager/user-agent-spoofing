@@ -19,6 +19,6 @@ public class Main {
 
         APK apk = new APK(args[0]);
 
-        apk.decompile();
+        apk.decompileAG();
     }
 }

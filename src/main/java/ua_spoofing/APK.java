@@ -1,12 +1,11 @@
 package ua_spoofing;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+
+import org.python.util.PythonInterpreter;
 
 /**
  * Class that holds information about an APK file
@@ -45,7 +44,7 @@ public class APK {
      * @throws IOException TODO
      * @throws InterruptedException TODO
      */
-    public void decompile() throws IOException, InterruptedException {
+    public void decompileJADX() throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
 
         dir = new File(FilenameUtils.getFullPath(file.getPath())
@@ -56,8 +55,8 @@ public class APK {
 
         if (dir.exists()) {
             System.out.println("[INFO] output directory already exists! " +
-                    "Deleting...");
-            FileUtils.deleteDirectory(dir);
+                    "Cleaning...");
+            FileUtils.cleanDirectory(dir);
         }
 
         System.out.println("[INFO] Decompiling, starting JADX");
@@ -78,6 +77,32 @@ public class APK {
         int exit = pr.waitFor();
 
         System.out.println("[INFO] Exited with code " + exit);
+    }
+
+    public void decompileAG() throws IOException, InterruptedException {
+        Runtime rt = Runtime.getRuntime();
+
+        dir = new File(FilenameUtils.getFullPath(file.getPath())
+                + "output");
+
+        System.out.println("[INFO] APK location: " + file.getPath());
+        System.out.println("[INFO] Output location: " + dir.getPath());
+
+        if (dir.exists()) {
+            System.out.println("[INFO] output directory already exists! " +
+                    "Deleting...");
+            FileUtils.deleteDirectory(dir);
+        }
+
+        System.out.println("[INFO] Decompiling, starting AndroGuard");
+        System.out.println("[INFO] This may take a while, depending on the size" +
+                " of the APK");
+
+        PythonInterpreter python = new PythonInterpreter();
+        python.exec("import sys\n" +
+                "sys.path.append('target/classes/')\n" +
+                "sys.path.append('C:/Users/" + System.getProperty("user.name") + "/AppData/Local/Programs/Python/Python38/Lib/site-packages')\n" +
+                "from decompiler import decompile_apk");
     }
 
     public File getFile() {
