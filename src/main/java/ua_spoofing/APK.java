@@ -86,6 +86,7 @@ public class APK {
 
     public void setFile(File file) {
         this.file = file;
+        this.dir = null;
     }
 
     public File getDir() {
