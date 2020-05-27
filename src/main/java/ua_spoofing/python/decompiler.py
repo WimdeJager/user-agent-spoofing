@@ -27,9 +27,9 @@ def convert_field_desc(name,field_desc):
     return
 
 def check_dirs(directory):
-    if not os.path.exists(PREFIX+directory):
+    if not os.path.exists(PREFIX + "/" + directory):
         try:
-            os.makedirs(PREFIX+directory)
+            os.makedirs(PREFIX + "/" + directory)
         except:
             pass
 
@@ -37,9 +37,11 @@ def check_path(class_path):
     org_path = class_path.replace(".","/")
     paths = org_path.split("/")
     paths = paths[:len(paths)-1]
+
     for index,folder in enumerate(paths):
         check_dirs('/'.join(paths[:index+1]))
-    return PREFIX+org_path+".java"
+
+    return PREFIX + "/" + org_path + ".java"
 
 if __name__=="__main__":
     if len(argv) != 3:
@@ -47,27 +49,30 @@ if __name__=="__main__":
         print("*please ensure you use the full path for OUTPUT_DIRECTORY...")
         exit(1)
 
-    PREFIX = argv[2]
+    apk_path = argv[1]
+    out_path = argv[2]
 
-    if not os.path.exists(PREFIX):
-        print("Output directory '%s' does not exist..." % (PREFIX))
+    PREFIX = out_path
+
+    if not os.path.exists(apk_path):
+        print("APK file '%s' not found..." % apk_path)
         exit(1)
 
-    elif not os.path.exists(argv[2]):
-        print("APK file '%s' not found..." % (argv[2]))
+    if not os.path.exists(out_path):
+        print("Output directory '%s' does not exist..." % out_path)
         exit(1)
 
-    a = apk.APK(argv[1])
+    a = apk.APK(apk_path)
     d = dvm.DalvikVMFormat(a.get_dex())
-    vmx = analysis.VMAnalysis(d)
+    vmx = analysis.Analysis(d)
 
     for _class in d.get_classes():
         class_path = convert_descriptor(_class.get_name())
         path = check_path(class_path)
-        print("[*] writing ...'",path,"'")
+        print("[*] writing ...'", path, "'")
 
         if not os.path.exists(path):
-            java = open(path,"w")
+            java = open(path, "w")
 
             for field in _class.get_fields():
                 access_flags = field.get_access_flags_string()
