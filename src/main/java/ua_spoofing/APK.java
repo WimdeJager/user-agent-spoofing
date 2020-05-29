@@ -104,8 +104,6 @@ public class APK {
                 + FilenameUtils.separatorsToUnix(file.getPath()) + "\',\'"
                 + FilenameUtils.separatorsToUnix(dir.getPath()) + "\')\"";
 
-        System.out.println("COMMAND: " + cmd);
-
         Process pr = rt.exec(cmd);
 
         String line;
@@ -119,12 +117,6 @@ public class APK {
         int exit = pr.waitFor();
 
         System.out.println("[INFO] Exited with code " + exit);
-
-//        PythonInterpreter python = new PythonInterpreter();
-//        python.exec("import sys\n" +
-//                "sys.path.append('target/classes/')\n" +
-//                "sys.path.append('C:/Users/" + System.getProperty("user.name") + "/AppData/Local/Programs/Python/Python38/Lib/site-packages')\n" +
-//                "from decompiler import decompile_apk");
     }
 
     public File getFile() {
@@ -133,7 +125,6 @@ public class APK {
 
     public void setFile(File file) {
         this.file = file;
-        this.dir = null;
     }
 
     public File getDir() {
