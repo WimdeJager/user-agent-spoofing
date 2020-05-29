@@ -11,11 +11,11 @@ by k3170makan
 # decompile_apk("D:/wimde/cs/bscproject/dataset/Benign-sample-187/a.a.hikidashi.apk", "D:/wimde/cs/bscproject/dataset/Benign-sample-187/output")
 
 from sys import exit
-from sys import path
+# from sys import path
 
 import os
-
-print(path)
+#
+# print(path)
 
 from androguard.core.bytecodes import apk
 from androguard.core.bytecodes import dvm
