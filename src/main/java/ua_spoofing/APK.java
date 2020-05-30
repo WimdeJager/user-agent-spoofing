@@ -75,7 +75,7 @@ public class APK {
         OutputHandler.print(OutputHandler.Type.INF,
                 "(this may take a while, depending on the size of the APK)");
 
-        Process pr = rt.exec("cmd /c jadx -d " + dir.getPath() + " "
+        Process pr = rt.exec("cmd /c jadx -r -ds " + dir.getPath() + " "
                 + file.getPath());
 
         String line;
@@ -90,6 +90,7 @@ public class APK {
 
         OutputHandler.print(OutputHandler.Type.INF,
                 "Application is decompiled (exit code " + exitVal + ")");
+        OutputHandler.newline();
     }
 
     /**
@@ -137,6 +138,7 @@ public class APK {
 
         OutputHandler.print(OutputHandler.Type.INF,
                 "Application is decompiled (exit code " + exitVal + ")");
+        OutputHandler.newline();
     }
 
     public void findUA() throws IOException {
