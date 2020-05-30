@@ -35,9 +35,14 @@ public class APK {
      */
     public APK(String location, String outputDir) {
         this.file = new File(location);
-        this.dir  = new File(outputDir);
+
+        if (outputDir != null) {
+            this.dir  = new File(outputDir);
+        } else {
+            this.dir = new File(this.file.getPath() + "output");
+        }
+
         this.name = FilenameUtils.getName(file.getPath());
-        System.out.println(name);
     }
 
     /**
