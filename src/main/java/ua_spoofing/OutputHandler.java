@@ -6,22 +6,26 @@ package ua_spoofing;
 public class OutputHandler {
 
     public enum Type {
-        INFO,
-        WARNING,
-        ERROR,
+        INF,
+        WRN,
+        ERR,
         EXT
     }
 
-    public void print(Type t, String msg) {
+    public static void print(Type t, String msg) {
         switch (t) {
-            case INFO:
+            case INF:
                 System.out.println("[INFO\t] " + msg);
-            case WARNING:
+                break;
+            case WRN:
                 System.out.println("[WARN\t] " + msg);
-            case ERROR:
+                break;
+            case ERR:
                 System.err.println("[ERROR\t] " + msg);
+                break;
             case EXT:
                 System.out.println("[EXT\t] " + msg);
+                break;
             default:
                 System.err.println("unknown print type!");
         }
