@@ -83,13 +83,13 @@ public class APK {
                 new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
         while ((line = input.readLine()) != null) {
-            OutputHandler.print(OutputHandler.Type.EXT, line);
+            OutputHandler.print(OutputHandler.Type.INF, line);
         }
 
-        int exit = pr.waitFor();
+        int exitVal = pr.waitFor();
 
         OutputHandler.print(OutputHandler.Type.INF,
-                "Exited with code " + exit);
+                "Application is decompiled (exit code " + exitVal + ")");
     }
 
     /**
@@ -131,15 +131,12 @@ public class APK {
                 + FilenameUtils.separatorsToUnix(file.getPath()) + "\',\'"
                 + FilenameUtils.separatorsToUnix(dir.getPath()) + "\')\"");
 
-        String line;
-        BufferedReader input =
-                new BufferedReader(new InputStreamReader(pr.getInputStream()));
+        OutputHandler.print(OutputHandler.Type.INF, "Processing...");
 
-        while ((line = input.readLine()) != null) {
-            OutputHandler.print(OutputHandler.Type.EXT, line);
-        }
+        int exitVal = pr.waitFor();
 
-        int exit = pr.waitFor();
+        OutputHandler.print(OutputHandler.Type.INF,
+                "Application is decompiled (exit code " + exitVal + ")");
     }
 
     public void findUA() throws IOException {

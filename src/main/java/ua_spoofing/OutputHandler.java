@@ -8,8 +8,7 @@ public class OutputHandler {
     public enum Type {
         INF,
         WRN,
-        ERR,
-        EXT
+        ERR
     }
 
     public static void print(Type t, String msg) {
@@ -22,9 +21,6 @@ public class OutputHandler {
                 break;
             case ERR:
                 System.err.println("[ERROR\t] " + msg);
-                break;
-            case EXT:
-                System.out.println("[EXT\t] " + msg);
                 break;
             default:
                 System.err.println("unknown print type!");
