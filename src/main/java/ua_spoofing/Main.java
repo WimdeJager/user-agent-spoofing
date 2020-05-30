@@ -37,12 +37,15 @@ public class Main {
                 apk = new APK(location, outputDir);
 
                 if (cmd.hasOption("j")) {
+                    OutputHandler.newline();
                     apk.decompileJADX();
                 } else if (cmd.hasOption("a")) {
+                    OutputHandler.newline();
                     apk.decompileAG();
                 } else {
                     OutputHandler.print(OutputHandler.Type.INF,
                             "No decompilation method specified, using Androguard.");
+                    OutputHandler.newline();
                     apk.decompileAG();
                 }
             }

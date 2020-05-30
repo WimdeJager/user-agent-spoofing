@@ -39,7 +39,7 @@ public class APK {
         if (outputDir != null) {
             this.dir  = new File(outputDir);
         } else {
-            this.dir = new File(this.file.getPath() + "output");
+            this.dir = new File(this.file.getParent() + "\\output");
         }
 
         this.name = FilenameUtils.getName(file.getPath());
@@ -58,16 +58,19 @@ public class APK {
         OutputHandler.print(OutputHandler.Type.INF,
                 "Output location: " + dir.getPath());
 
+
         if (dir.exists()) {
             OutputHandler.print(OutputHandler.Type.INF,
                     "Output directory already exists! Deleting...");
             FileUtils.deleteDirectory(dir);
         }
 
+        OutputHandler.newline();
+
         OutputHandler.print(OutputHandler.Type.INF,
-                "Decompiling, starting JADX");
+                "Decompiling, starting JADX...");
         OutputHandler.print(OutputHandler.Type.INF,
-                "This may take a while, depending on the size of the APK");
+                "(this may take a while, depending on the size of the APK)");
 
         Process pr = rt.exec("cmd /c jadx -d " + dir.getPath() + " "
                 + file.getPath());
@@ -106,10 +109,12 @@ public class APK {
             }
         }
 
+        OutputHandler.newline();
+
         OutputHandler.print(OutputHandler.Type.INF,
-                "Decompiling, starting AndroGuard");
+                "Decompiling, starting Androguard...");
         OutputHandler.print(OutputHandler.Type.INF,
-                "This may take a while, depending on the size of the APK");
+                "(this may take a while, depending on the size of the APK)");
 
         Process pr = rt.exec("cmd /c python  -c " +
                 "\"from target.classes.decompiler import decompile_apk; " +

@@ -31,4 +31,8 @@ public class OutputHandler {
         }
     }
 
+    public static void newline() {
+        System.out.println("[INFO\t] ========================================================================");
+    }
+
 }

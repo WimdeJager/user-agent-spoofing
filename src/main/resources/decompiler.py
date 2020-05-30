@@ -45,6 +45,8 @@ def check_path(class_path, prefix):
     return prefix + "/" + org_path + ".java"
 
 def decompile_apk(apk_path, out_path):
+    print("Loading...")
+
     if not os.path.exists(apk_path):
         print("APK file '%s' not found..." % apk_path)
         exit(1)
@@ -57,10 +59,12 @@ def decompile_apk(apk_path, out_path):
     d = dvm.DalvikVMFormat(a.get_dex())
     vmx = analysis.Analysis(d)
 
+    print("Processing...")
+
     for _class in d.get_classes():
         class_path = convert_descriptor(_class.get_name())
         path = check_path(class_path, out_path)
-        print("[*] writing ...'", path, "'")
+        # print("[*] writing ...'", path, "'")
 
         if not os.path.exists(path):
             java = open(path, "w")
@@ -85,3 +89,5 @@ def decompile_apk(apk_path, out_path):
 
             java.flush()
             java.close()
+
+    print("Done.")
