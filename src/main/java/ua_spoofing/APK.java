@@ -48,18 +48,21 @@ public class APK {
     public void decompileJADX() throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
 
-        System.out.println("[INFO] APK location: " + file.getPath());
-        System.out.println("[INFO] Output location: " + dir.getPath());
+        OutputHandler.print(OutputHandler.Type.INF,
+                "APK location: " + file.getPath());
+        OutputHandler.print(OutputHandler.Type.INF,
+                "Output location: " + dir.getPath());
 
         if (dir.exists()) {
-            System.out.println("[INFO] output directory already exists! " +
-                    "Cleaning...");
-            FileUtils.cleanDirectory(dir);
+            OutputHandler.print(OutputHandler.Type.INF,
+                    "Output directory already exists! Deleting...");
+            FileUtils.deleteDirectory(dir);
         }
 
-        System.out.println("[INFO] Decompiling, starting JADX");
-        System.out.println("[INFO] This may take a while, depending on the size" +
-                " of the APK");
+        OutputHandler.print(OutputHandler.Type.INF,
+                "Decompiling, starting JADX");
+        OutputHandler.print(OutputHandler.Type.INF,
+                "This may take a while, depending on the size of the APK");
 
         Process pr = rt.exec("cmd /c jadx -d " + dir.getPath() + " "
                 + file.getPath());
@@ -69,54 +72,58 @@ public class APK {
                 new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
         while ((line = input.readLine()) != null) {
-            System.out.println("[JADX] " + line);
+            OutputHandler.print(OutputHandler.Type.EXT, line);
         }
 
         int exit = pr.waitFor();
 
-        System.out.println("[INFO] Exited with code " + exit);
+        OutputHandler.print(OutputHandler.Type.INF,
+                "Exited with code " + exit);
     }
 
     public void decompileAG() throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
 
-        System.out.println("[INFO] APK location: " + file.getPath());
-        System.out.println("[INFO] Output location: " + dir.getPath());
+        OutputHandler.print(OutputHandler.Type.INF,
+                "APK location: " + file.getPath());
+        OutputHandler.print(OutputHandler.Type.INF,
+                "Output location: " + dir.getPath());
 
         if (dir.exists()) {
-            System.out.println("[INFO] output directory already exists! " +
-                    "Cleaning...");
-            FileUtils.deleteDirectory(dir);
+            OutputHandler.print(OutputHandler.Type.INF,
+                    "Output directory already exists! Cleaning...");
+            FileUtils.cleanDirectory(dir);
         } else {
             if (!dir.mkdirs()) {
-                System.out.println("[ERROR] Could not create directory " + dir.getPath());
+                OutputHandler.print(OutputHandler.Type.ERR,
+                        "Could not create directory " + dir.getPath());
                 System.exit(1);
             }
         }
 
-        System.out.println("[INFO] Decompiling, starting AndroGuard");
-        System.out.println("[INFO] This may take a while, depending on the size" +
-                " of the APK");
+        OutputHandler.print(OutputHandler.Type.INF,
+                "Decompiling, starting AndroGuard");
+        OutputHandler.print(OutputHandler.Type.INF,
+                "This may take a while, depending on the size of the APK");
 
-        String cmd = "cmd /c python  -c " +
+        Process pr = rt.exec("cmd /c python  -c " +
                 "\"from target.classes.decompiler import decompile_apk; " +
                 "decompile_apk(\'"
                 + FilenameUtils.separatorsToUnix(file.getPath()) + "\',\'"
-                + FilenameUtils.separatorsToUnix(dir.getPath()) + "\')\"";
-
-        Process pr = rt.exec(cmd);
+                + FilenameUtils.separatorsToUnix(dir.getPath()) + "\')\"");
 
         String line;
         BufferedReader input =
                 new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
         while ((line = input.readLine()) != null) {
-            System.out.println("[ANDROG] " + line);
+            OutputHandler.print(OutputHandler.Type.EXT, line);
         }
 
         int exit = pr.waitFor();
 
-        System.out.println("[INFO] Exited with code " + exit);
+        OutputHandler.print(OutputHandler.Type.INF,
+                "Exited with code " + exit);
     }
 
     public File getFile() {
