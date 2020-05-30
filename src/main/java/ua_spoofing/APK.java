@@ -131,8 +131,12 @@ public class APK {
 
         int exit = pr.waitFor();
 
+    public void findUA() throws IOException {
         OutputHandler.print(OutputHandler.Type.INF,
-                "Exited with code " + exit);
+                "Looking for user agent...");
+
+        UAFinder uaFinder = new UAFinder(dir);
+        uaFinder.find();
     }
 
     public File getFile() {
