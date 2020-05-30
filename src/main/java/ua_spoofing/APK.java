@@ -19,8 +19,8 @@ public class APK {
     private File file;
 
     /**
-     * Location of (path to) the decompiled source code. If null, the application
-     * has not been decompiled
+     * Location of (path to) the decompiled source code (might be empty or not
+     * existing if this.decompile() has not been called yet).
      */
     private File dir;
 
@@ -32,9 +32,12 @@ public class APK {
     /**
      * Constructor
      * @param location the location of the APK file
+     * @param outputDir location the decompiled files should be placed (null if
+     *                  not specified by user).
      */
     public APK(String location, String outputDir) {
         this.file = new File(location);
+        this.name = FilenameUtils.getName(file.getPath());
 
         if (outputDir != null) {
             this.dir  = new File(outputDir);
@@ -46,8 +49,9 @@ public class APK {
 
     /**
      * Decompiles the APK file, using JADX.
-     * @throws IOException TODO
-     * @throws InterruptedException TODO
+     * @throws IOException when output directory could not be cleaned, or when execution
+     *                     of JADX process failed
+     * @throws InterruptedException when JADX process got interrupted
      */
     public void decompileJADX() throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
@@ -88,6 +92,12 @@ public class APK {
                 "Exited with code " + exit);
     }
 
+    /**
+     * Decompiles the APK file, using Androguard
+     * @throws IOException when output directory could not be cleaned, or when execution
+     *                     of Androguard process failed
+     * @throws InterruptedException when Androguard process got interrupted
+     */
     public void decompileAG() throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
 
@@ -130,6 +140,7 @@ public class APK {
         }
 
         int exit = pr.waitFor();
+    }
 
     public void findUA() throws IOException {
         OutputHandler.print(OutputHandler.Type.INF,

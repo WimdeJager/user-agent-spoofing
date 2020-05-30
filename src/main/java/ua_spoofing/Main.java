@@ -48,6 +48,8 @@ public class Main {
                     OutputHandler.newline();
                     apk.decompileAG();
                 }
+
+                apk.findUA();
             }
 
             else {
