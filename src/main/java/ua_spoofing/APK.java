@@ -39,10 +39,9 @@ public class APK {
         if (outputDir != null) {
             this.dir  = new File(outputDir);
         } else {
-            this.dir = new File(this.file.getParent() + "\\output");
+            this.dir = new File(this.file.getParent() + "\\"
+                    + FilenameUtils.removeExtension(name));
         }
-
-        this.name = FilenameUtils.getName(file.getPath());
     }
 
     /**
