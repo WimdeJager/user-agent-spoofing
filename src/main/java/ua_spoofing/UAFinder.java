@@ -34,7 +34,7 @@ public class UAFinder {
                     _find(f);
             } else {
 //                OutputHandler.print(OutputHandler.Type.INF,
-//                        "Processing file" + f.getName() + " ...");
+//                        "Processing file " + f.getName() + " ...");
                 String fString = FileUtils.readFileToString(f, Charset.defaultCharset());
                 if (fString.contains("setHeader")
                         || fString.contains("setParameter")
