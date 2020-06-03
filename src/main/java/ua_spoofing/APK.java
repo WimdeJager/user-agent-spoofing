@@ -145,7 +145,7 @@ public class APK {
         OutputHandler.print(OutputHandler.Type.INF,
                 "Looking for user agent...");
 
-        UAFinder uaFinder = new UAFinder(dir);
+        UAFinder uaFinder = new UAFinder(dir, name);
         uaFinder.find();
     }
 

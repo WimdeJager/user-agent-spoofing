@@ -13,9 +13,11 @@ import java.nio.charset.Charset;
 public class UAFinder {
 
     private File dir;
+    private String apkName;
 
-    public UAFinder(File dir) {
-        this.dir = dir;
+    public UAFinder(File dir, String apkName) {
+        this.dir     = dir;
+        this.apkName = apkName;
     }
 
     public void find() throws IOException {
@@ -25,10 +27,11 @@ public class UAFinder {
     private void _find(File d) throws IOException {
 //        OutputHandler.print(OutputHandler.Type.INF,
 //                "Looking in dir " + d.getPath());
-        File[] files = d.listFiles();
+        File[] files = d.listFiles(); // list files/directories in directory
         for (File f : files) {
             if (f.isDirectory()) {
-                _find(f);
+                if (apkName.contains(f.getName()))
+                    _find(f);
             } else {
 //                OutputHandler.print(OutputHandler.Type.INF,
 //                        "Processing file" + f.getName() + " ...");
