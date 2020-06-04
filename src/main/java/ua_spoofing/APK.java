@@ -37,6 +37,12 @@ public class APK {
      */
     public APK(String location, String outputDir) {
         this.file = new File(location);
+        if (!file.exists() || file.isDirectory()) {
+            OutputHandler.print(OutputHandler.Type.ERR,
+                     "The APK file does not exist!");
+            System.exit(1);
+        }
+
         this.name = FilenameUtils.getName(file.getPath());
 
         if (outputDir != null) {
