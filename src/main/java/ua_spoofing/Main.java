@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.apache.commons.cli.*;
 
-// java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\sample_database\com.spotify.music\com.spotify.music.apk
+// java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\dataset\Benign-sample-187\a.a.hikidashi.apk
 
 /**
  * Main class.

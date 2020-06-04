@@ -30,7 +30,7 @@ public class UAFinder {
         File[] files = d.listFiles(); // list files/directories in directory
         for (File f : files) {
             if (f.isDirectory()) {
-                if (apkName.contains(f.getName()))
+//                if (apkName.contains(f.getName()))
                     _find(f);
             } else {
 //                OutputHandler.print(OutputHandler.Type.INF,
