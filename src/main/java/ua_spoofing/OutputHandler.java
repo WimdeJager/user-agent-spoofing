@@ -30,7 +30,17 @@ public class OutputHandler {
   }
 
   public static void newline() {
-    System.out.println("[INFO\t] " + Strings.repeat("=", 80));
+    print(Type.INF, Strings.repeat("=", 80));
+  }
+
+  public static void fileMode() {
+    print(Type.INF,
+        "==================================FILE MODE=====================================");
+  }
+
+  public static void dirMode() {
+    print(Type.INF,
+        "=================================DIRECTORY MODE=================================");
   }
 
 }
