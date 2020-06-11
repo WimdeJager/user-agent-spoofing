@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import com.github.javaparser.ParseException;
+import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.Expression;
@@ -33,7 +34,9 @@ public class UAFinder {
 //    OutputHandler.print(OutputHandler.Type.INF,
 //        "Looking in dir " + d.getPath());
 
-    if (d.getName().contains("android") || d.getName().contains("google")) {
+    if (d.getName().contains("android")
+        || d.getName().contains("google")
+        || d.getName().contains("apache")) {
       return;
     }
 
@@ -44,53 +47,78 @@ public class UAFinder {
 //        OutputHandler.print(OutputHandler.Type.INF,
 //            "Processing file " + f.getName() + " ...");
 
-        CompilationUnit cu = StaticJavaParser.parse(f);
+        try {
+          CompilationUnit cu = StaticJavaParser.parse(f);
 
-        new VoidVisitorAdapter<Object>() {
-          @Override
-          public void visit(MethodCallExpr n, Object arg) {
-            super.visit(n, arg);
-            String call = n.getNameAsString();
+          new VoidVisitorAdapter<Object>() {
+            @Override
+            public void visit(MethodCallExpr n, Object arg) {
+              super.visit(n, arg);
+              String call = n.getNameAsString();
 
-            if (call.equals("setHeader")) {
-              if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
-                OutputHandler.print(OutputHandler.Type.INF,
-                    "UA change using setHeader detected in file: " +
-                        f.getPath());
+              if (call.equals("setHeader")) {
+                if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
+                  OutputHandler.newline();
+                  OutputHandler.print(OutputHandler.Type.INF,
+                      "UA change using setHeader detected in file: " +
+                          f.getPath());
 
-                findContents(n.getArgument(1));
+                  findContents(n.getArgument(1));
+                }
               }
-            }
 
-            if (call.equals("setParameter")) {
-              OutputHandler.print(OutputHandler.Type.INF,
-                  "File " + f.getPath() +
-                      " Function call detected: " + n.getName()
-                      + ", arguments: " + n.getArguments());
-            }
+              if (call.equals("addHeader")) {
+                if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
+                  OutputHandler.newline();
+                  OutputHandler.print(OutputHandler.Type.INF,
+                      "UA change using addHeader detected in file: " +
+                          f.getPath());
 
-            if (call.equals("setUserAgentString")) {
-              if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
-                OutputHandler.print(OutputHandler.Type.INF,
-                    "UA change using setHeader detected in file " +
-                        f.getPath());
-
-                findContents(n.getArgument(1));
+                  findContents(n.getArgument(1));
+                }
               }
-            }
 
-            if (call.equals("setRequestProperty")) {
-              if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
-                OutputHandler.print(OutputHandler.Type.INF,
-                    "UA change using setRequestProperty detected in file " +
-                        f.getPath());
+              if (call.equals("setParameter")) {
+                if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
+                  OutputHandler.newline();
+                  OutputHandler.print(OutputHandler.Type.INF,
+                      "UA change using setParameter detected in file: " +
+                          f.getPath());
 
-                findContents(n.getArgument(1));
+                  findContents(n.getArgument(1));
+                }
               }
-            }
 
-          }
-        }.visit(cu, null);
+              if (call.equals("setUserAgentString")) {
+                if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
+                  OutputHandler.newline();
+                  OutputHandler.print(OutputHandler.Type.INF,
+                      "UA change using setHeader detected in file " +
+                          f.getPath());
+
+                  findContents(n.getArgument(1));
+                }
+              }
+
+              if (call.equals("setRequestProperty")) {
+                if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
+                  OutputHandler.newline();
+                  OutputHandler.print(OutputHandler.Type.INF,
+                      "UA change using setRequestProperty detected in file " +
+                          f.getPath());
+
+                  findContents(n.getArgument(1));
+                }
+              }
+
+            }
+          }.visit(cu, null);
+        }
+
+        catch (ParseProblemException e) {
+          OutputHandler.print(OutputHandler.Type.ERR,
+              "File " + f.getPath() + " could not be parsed!");
+        }
       }
     }
   }

@@ -80,10 +80,10 @@ public class APK {
       }
     }
 
-//    OutputHandler.newline();
+//    OutputHandler.separator();
 
     OutputHandler.print(OutputHandler.Type.INF,
-        "Decompiling " + file.getName() + " ...");
+        "Decompiling " + file.getPath() + " ...");
 //    OutputHandler.print(OutputHandler.Type.INF,
 //        "(this may take a while, depending on the size of the APK)");
 
@@ -115,7 +115,7 @@ public class APK {
 
 //    OutputHandler.print(OutputHandler.Type.INF,
 //        "Application is decompiled (exit code " + exitVal + ")");
-//    OutputHandler.newline();
+//    OutputHandler.separator();
   }
 
   public void findUA() throws IOException {

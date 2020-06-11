@@ -94,7 +94,7 @@ public class Main {
           APK apk = new APK(f, null);
           apk.decompile(method);
           apk.findUA();
-          OutputHandler.newline();
+          OutputHandler.separator();
         }
       }
     }

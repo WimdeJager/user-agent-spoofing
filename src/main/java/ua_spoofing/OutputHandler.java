@@ -30,6 +30,10 @@ public class OutputHandler {
   }
 
   public static void newline() {
+    print(Type.INF, "");
+  }
+
+  public static void separator() {
     print(Type.INF, Strings.repeat("=", 80));
   }
 
