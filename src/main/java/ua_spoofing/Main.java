@@ -31,11 +31,11 @@ public class Main {
         if (cmd.hasOption("j")) {
           method = "JADX";
         } else if (cmd.hasOption("a")) {
-          method = "JADX";
+          method = "AG";
         } else {
           OutputHandler.print(OutputHandler.Type.INF,
               "No decompilation method specified, using Androguard.");
-          method = "ANDROGUARD";
+          method = "AG";
         }
 
         if (new File(location).isDirectory()) {

@@ -2,11 +2,10 @@ package ua_spoofing;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import ua_spoofing.ua.UAFinder;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * Class that holds information about an APK file
@@ -27,6 +26,8 @@ public class APK {
    * Name of the file (without path)
    */
   private String name;
+
+  private boolean decompiled;
 
   /**
    * Constructor
@@ -50,17 +51,20 @@ public class APK {
       this.dir = new File(this.file.getParent() + "\\"
           + FilenameUtils.removeExtension(name));
     }
+
+    this.decompiled = false;
   }
 
+
   /**
-   * Decompiles the APK file, using JADX.
-   *
-   * @throws IOException when output directory could not be cleaned, or when
-   * execution of JADX process failed
-   * @throws InterruptedException when JADX process got interrupted
+   * Decompiles the APK file
+   * @param method decompilation method to be used:
+   *               - "JADX" to use JADX
+   *               - "AG" or null to use Androguard
+   * @throws IOException
+   * @throws InterruptedException
    */
-  public void decompile(String method)
-      throws IOException, InterruptedException {
+  public void decompile(String method) throws InterruptedException {
     Runtime rt = Runtime.getRuntime();
 
 //    OutputHandler.print(OutputHandler.Type.INF,
@@ -71,12 +75,20 @@ public class APK {
     if (dir.exists()) {
 //      OutputHandler.print(OutputHandler.Type.INF,
 //          "Output directory already exists! Cleaning...");
-      FileUtils.cleanDirectory(dir);
+      try {
+        FileUtils.cleanDirectory(dir);
+      } catch (IOException e) {
+        OutputHandler.print(OutputHandler.Type.ERR,
+            "There was an error cleaning the output directory "
+                + dir.getPath() + ", there might be another program using the" +
+                " directory.");
+        return;
+      }
     } else {
       if (!dir.mkdirs()) {
         OutputHandler.print(OutputHandler.Type.ERR,
             "Could not create directory " + dir.getPath());
-        System.exit(1);
+        return;
       }
     }
 
@@ -89,8 +101,18 @@ public class APK {
 
     Process pr;
     if (method.equals("JADX")) {
-      pr = rt.exec("cmd /c jadx -r -ds " + dir.getPath() + " "
-          + file.getPath());
+      try {
+        pr = rt.exec("cmd /c jadx -r -ds " + dir.getPath() + " "
+            + file.getPath());
+        pr.waitFor();
+        decompiled = true;
+      } catch (IOException e) {
+        OutputHandler.print(OutputHandler.Type.ERR,
+            "There was an error executing JADX. Do you have JADX installed " +
+                "and did you add it to your PATH variable?");
+        OutputHandler.print(OutputHandler.Type.ERR,
+            "Message: " + e.getMessage());
+      }
 
 //      String line;
 //      BufferedReader input =
@@ -99,18 +121,26 @@ public class APK {
 //      while ((line = input.readLine()) != null) {
 //        OutputHandler.print(OutputHandler.Type.INF, line);
 //      }
+
     } else {
-      pr = rt.exec("cmd /c python  -c " +
-          "\"from target.classes.decompiler import decompile_apk; " +
-          "decompile_apk(\'"
-          + FilenameUtils.separatorsToUnix(file.getPath()) + "\',\'"
-          + FilenameUtils.separatorsToUnix(dir.getPath()) + "\')\"");
+      try {
+        pr = rt.exec("cmd /c python  -c " +
+            "\"from target.classes.decompiler import decompile_apk; " +
+            "decompile_apk(\'"
+            + FilenameUtils.separatorsToUnix(file.getPath()) + "\',\'"
+            + FilenameUtils.separatorsToUnix(dir.getPath()) + "\')\"");
+        pr.waitFor();
+        decompiled = true;
+      } catch (IOException e) {
+        OutputHandler.print(OutputHandler.Type.ERR,
+            "There was an error executing Androguard. Do you have Python and" +
+                " Androguard installed?");
+        OutputHandler.print(OutputHandler.Type.ERR,
+            "Message: " + e.getMessage());
+      }
 
 //      OutputHandler.print(OutputHandler.Type.INF, "Processing...");
     }
-
-
-    int exitVal = pr.waitFor();
 
 
 //    OutputHandler.print(OutputHandler.Type.INF,
@@ -119,11 +149,16 @@ public class APK {
   }
 
   public void findUA() throws IOException {
-    OutputHandler.print(OutputHandler.Type.INF,
-        "Looking for user agent...");
+    if (decompiled) {
+      OutputHandler.print(OutputHandler.Type.INF,
+          "Looking for user agent...");
 
-    UAFinder uaFinder = new UAFinder(dir, name);
-    uaFinder.find();
+      UAFinder uaFinder = new UAFinder(dir, name);
+      uaFinder.find();
+    } else {
+      OutputHandler.print(OutputHandler.Type.ERR,
+          "Application was not decompiled yet!");
+    }
   }
 
   public File getFile() {
