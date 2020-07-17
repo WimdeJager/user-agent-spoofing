@@ -1,13 +1,19 @@
 package ua_spoofing;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.cli.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import sun.nio.cs.US_ASCII;
 
 // java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\dataset\Benign-sample-187\a.a.hikidashi.apk
 // java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\dataset\samples\BeanBot\4edab972cc232a2525d6994760f0f71088707164.apk -j
+// java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main -j D:\wimde\cs\bscproject\dataset\samples
 
 /**
  * Main class.
@@ -79,21 +85,41 @@ public class Main {
 
   private static void processDirectory(String loc, String method)
       throws IOException, InterruptedException {
-    File d = new File(loc);
-    _processDir(d, method);
+    OutputHandler.print(OutputHandler.Type.INF,
+        "Directory: " + loc);
+
+    File log = new File(loc + "\\isProcessed.txt");
+    if (!log.exists() && !log.createNewFile()) {
+      OutputHandler.print(OutputHandler.Type.ERR,
+          "File isProcessed.txt could not be created!");
+    }
+    _processDir(new File(loc), method, log);
   }
 
-  private static void _processDir(File d, String method)
+  private static void _processDir(File d, String m, File log)
       throws IOException, InterruptedException {
+
     for (File f : d.listFiles()) {
       if (f.isDirectory()) {
-        _processDir(f, method);
+        _processDir(f, m, log);
       }
       else {
-        if (FilenameUtils.getExtension(f.getName()).equals("apk")) {
+        if (FileUtils.readFileToString(
+            log, Charset.defaultCharset()).contains(f.getPath())) {
+//        if (log.toString().contains("HELLO")) {
+          OutputHandler.print(OutputHandler.Type.INF,
+              "File already processed in previous run!");
+        }
+        else if (FilenameUtils.getExtension(f.getName()).equals("apk")) {
           APK apk = new APK(f, null);
-          apk.decompile(method);
+
+          apk.decompile(m);
           apk.findUA();
+
+          FileWriter w = new FileWriter(log, true);
+          w.write(FilenameUtils.separatorsToUnix(f.getPath()) + " \n");
+          w.close();
+
           OutputHandler.separator();
         }
       }
