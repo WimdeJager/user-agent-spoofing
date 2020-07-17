@@ -21,17 +21,16 @@ public class UAList {
     list.add(ua);
   }
 
-  public void add(String str) {
-    str = str.replaceAll("^(['\"])(.*)\\1$", "$2");
-    list.add(new UserAgent(str));
-  }
-
   public int size() {
     return list.size();
   }
 
   public ArrayList<UserAgent> getList() {
     return list;
+  }
+
+  public void removeDuplicates() {
+
   }
 
 }

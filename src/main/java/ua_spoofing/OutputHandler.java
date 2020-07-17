@@ -48,11 +48,9 @@ public class OutputHandler {
   }
 
   public static void printList(UAList l) {
-    System.out.print("[INF\t] User Agents: ");
     for (UserAgent ua : l.getList()) {
-      System.out.print("\"" + ua.toString() + "\", ");
+      System.out.println("[INF\t] " + ua.toString());
     }
-    System.out.println();
   }
 
 }

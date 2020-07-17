@@ -1,16 +1,18 @@
 package ua_spoofing;
 
-import ua_spoofing.OutputHandler;
+import java.io.File;
 
 /**
  * Created by wimde on 11-6-2020.
  */
 public class UserAgent {
 
-  String ua;
+  private String ua;
+  private File location;
 
-  public UserAgent(String ua) {
-    this.ua = ua;
+  public UserAgent(String ua, File location) {
+    this.ua       = ua;
+    this.location = location;
   }
 
   public void classify() {
@@ -18,7 +20,7 @@ public class UserAgent {
   }
 
   public String toString() {
-    return ua;
+    return String.format("\"%s\" in file %s", ua, location.getPath());
   }
 
 }
