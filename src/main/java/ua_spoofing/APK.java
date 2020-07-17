@@ -2,7 +2,6 @@ package ua_spoofing;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import ua_spoofing.ua.UAFinder;
 
 import java.io.File;
 import java.io.IOException;

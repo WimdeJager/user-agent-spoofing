@@ -1,4 +1,4 @@
-package ua_spoofing.ua;
+package ua_spoofing;
 
 import ua_spoofing.OutputHandler;
 
@@ -14,7 +14,7 @@ public class UserAgent {
   }
 
   public void classify() {
-    
+
   }
 
 }

@@ -1,4 +1,4 @@
-package ua_spoofing.ua;
+package ua_spoofing;
 
 import java.io.File;
 import java.io.IOException;
