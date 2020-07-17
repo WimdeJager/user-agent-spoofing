@@ -4,12 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import sun.nio.cs.US_ASCII;
 
 // java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\dataset\Benign-sample-187\a.a.hikidashi.apk
 // java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\dataset\samples\BeanBot\4edab972cc232a2525d6994760f0f71088707164.apk -j
@@ -62,7 +60,7 @@ public class Main {
 
           apk = new APK(new File(location), outputDir);
           apk.decompile(method);
-          apk.findUA();
+          apk.findUAs();
         }
       }
 
@@ -114,7 +112,7 @@ public class Main {
           APK apk = new APK(f, null);
 
           apk.decompile(m);
-          apk.findUA();
+          apk.findUAs();
 
           FileWriter w = new FileWriter(log, true);
           w.write(FilenameUtils.separatorsToUnix(f.getPath()) + " \n");

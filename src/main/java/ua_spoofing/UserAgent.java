@@ -17,4 +17,8 @@ public class UserAgent {
 
   }
 
+  public String toString() {
+    return ua;
+  }
+
 }

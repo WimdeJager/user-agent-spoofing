@@ -2,6 +2,7 @@ package ua_spoofing;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
@@ -19,15 +20,17 @@ import ua_spoofing.OutputHandler;
 public class UAFinder {
 
   private File dir;
-  private String apkName;
 
-  public UAFinder(File dir, String apkName) {
-    this.dir     = dir;
-    this.apkName = apkName;
+  private UAList uas;
+
+  public UAFinder(File dir) {
+    this.dir = dir;
+    this.uas = new UAList();
   }
 
-  public void find() throws IOException {
+  public UAList find() throws IOException {
     _find(dir);
+    return uas;
   }
 
   private void _find(File d) throws IOException {
@@ -127,6 +130,7 @@ public class UAFinder {
     if (e.isStringLiteralExpr()) {
       OutputHandler.print(OutputHandler.Type.INF,
           "UA is " + e.toString());
+      uas.add(e.toString());
     } else if (e.isNameExpr()) {
       OutputHandler.print(OutputHandler.Type.INF,
           "UA is contained in variable: " + e);

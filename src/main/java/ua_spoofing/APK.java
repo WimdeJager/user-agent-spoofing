@@ -5,6 +5,8 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that holds information about an APK file
@@ -27,6 +29,8 @@ public class APK {
   private String name;
 
   private boolean decompiled;
+
+  private UAList uas;
 
   /**
    * Constructor
@@ -52,6 +56,8 @@ public class APK {
     }
 
     this.decompiled = false;
+
+    this.uas = new UAList();
   }
 
 
@@ -147,41 +153,20 @@ public class APK {
 //    OutputHandler.separator();
   }
 
-  public void findUA() throws IOException {
+  public void findUAs() throws IOException {
     if (decompiled) {
       OutputHandler.print(OutputHandler.Type.INF,
           "Looking for user agent...");
 
-      UAFinder uaFinder = new UAFinder(dir, name);
-      uaFinder.find();
+      UAFinder uaFinder = new UAFinder(dir);
+      uas = uaFinder.find();
+
+      OutputHandler.printList(uas);
+
     } else {
       OutputHandler.print(OutputHandler.Type.ERR,
           "Application was not decompiled yet!");
     }
-  }
-
-  public File getFile() {
-    return file;
-  }
-
-  public void setFile(File file) {
-    this.file = file;
-  }
-
-  public File getDir() {
-    return dir;
-  }
-
-  public void setDir(File dir) {
-    this.dir = dir;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
 }

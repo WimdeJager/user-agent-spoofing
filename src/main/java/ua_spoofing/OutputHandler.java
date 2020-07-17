@@ -47,4 +47,12 @@ public class OutputHandler {
         "=================================DIRECTORY MODE=================================");
   }
 
+  public static void printList(UAList l) {
+    System.out.print("[INF\t] User Agents: ");
+    for (UserAgent ua : l.getList()) {
+      System.out.print("\"" + ua.toString() + "\", ");
+    }
+    System.out.println();
+  }
+
 }
