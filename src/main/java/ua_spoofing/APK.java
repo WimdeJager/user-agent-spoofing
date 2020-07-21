@@ -1,5 +1,6 @@
 package ua_spoofing;
 
+import com.blueconic.browscap.ParseException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -72,14 +73,7 @@ public class APK {
   public void decompile(String method) throws InterruptedException {
     Runtime rt = Runtime.getRuntime();
 
-//    OutputHandler.print(OutputHandler.Type.INF,
-//        "APK location: " + file.getPath());
-//    OutputHandler.print(OutputHandler.Type.INF,
-//        "Output location: " + dir.getPath());
-
     if (dir.exists()) {
-//      OutputHandler.print(OutputHandler.Type.INF,
-//          "Output directory already exists! Cleaning...");
       try {
         FileUtils.cleanDirectory(dir);
       } catch (IOException e) {
@@ -97,12 +91,8 @@ public class APK {
       }
     }
 
-//    OutputHandler.separator();
-
     OutputHandler.print(OutputHandler.Type.INF,
-        "Decompiling " + file.getPath() + " ...");
-//    OutputHandler.print(OutputHandler.Type.INF,
-//        "(this may take a while, depending on the size of the APK)");
+        "Scanning " + file.getName() + " ...");
 
     Process pr;
     if (method.equals("JADX")) {
@@ -118,14 +108,6 @@ public class APK {
         OutputHandler.print(OutputHandler.Type.ERR,
             "Message: " + e.getMessage());
       }
-
-//      String line;
-//      BufferedReader input =
-//          new BufferedReader(new InputStreamReader(pr.getInputStream()));
-//
-//      while ((line = input.readLine()) != null) {
-//        OutputHandler.print(OutputHandler.Type.INF, line);
-//      }
 
     } else {
       try {
@@ -143,25 +125,15 @@ public class APK {
         OutputHandler.print(OutputHandler.Type.ERR,
             "Message: " + e.getMessage());
       }
-
-//      OutputHandler.print(OutputHandler.Type.INF, "Processing...");
     }
-
-
-//    OutputHandler.print(OutputHandler.Type.INF,
-//        "Application is decompiled (exit code " + exitVal + ")");
-//    OutputHandler.separator();
   }
 
   public void findUAs() throws IOException {
     if (decompiled) {
-//      OutputHandler.print(OutputHandler.Type.INF,
-//          "Looking for user agent...");
-
       UAFinder uaFinder = new UAFinder(dir);
       uas = uaFinder.find();
 
-      OutputHandler.printList(uas);
+//      OutputHandler.printList(uas);
 
     } else {
       OutputHandler.print(OutputHandler.Type.ERR,
