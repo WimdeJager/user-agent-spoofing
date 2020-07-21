@@ -1,15 +1,13 @@
 package ua_spoofing;
 
+import org.apache.commons.cli.*;
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Scanner;
-
-import org.apache.commons.cli.*;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 // java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\dataset\Benign-sample-187\a.a.hikidashi.apk
 // java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\dataset\samples\BeanBot\4edab972cc232a2525d6994760f0f71088707164.apk -j
@@ -20,7 +18,7 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class Main {
   public static void main(String[] args)
-      throws IOException, InterruptedException, ParseException {
+      throws IOException, InterruptedException, ParseException, com.blueconic.browscap.ParseException {
     APK apk;
     Options options = new Options();
     addOptions(options);
@@ -63,6 +61,7 @@ public class Main {
           apk = new APK(new File(location), outputDir);
           apk.decompile(method);
           apk.findUAs();
+          apk.classifyUAs();
         }
       }
 
@@ -84,7 +83,7 @@ public class Main {
   }
 
   private static void processDirectory(String loc, String method)
-      throws IOException, InterruptedException {
+      throws IOException, InterruptedException, com.blueconic.browscap.ParseException {
     OutputHandler.print(OutputHandler.Type.INF,
         "Directory: " + loc);
 
@@ -98,10 +97,12 @@ public class Main {
   }
 
   private static void _processDir(File d, String m, File log)
-      throws IOException, InterruptedException {
+      throws IOException, InterruptedException, com.blueconic.browscap.ParseException {
 
     for (File f : d.listFiles()) {
       if (f.isDirectory() && !f.getName().contains("uaspoof")) {
+        OutputHandler.print(OutputHandler.Type.INF,
+            "Directory: " + f.getPath());
         _processDir(f, m, log);
       }
       else {
@@ -111,6 +112,7 @@ public class Main {
 
           apk.decompile(m);
           apk.findUAs();
+          apk.classifyUAs();
 
           FileWriter w = new FileWriter(log, true);
           w.write(f.getPath() + "\n");

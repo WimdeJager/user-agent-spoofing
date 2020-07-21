@@ -169,4 +169,12 @@ public class APK {
     }
   }
 
+  public void classifyUAs() throws IOException, ParseException {
+    if (decompiled) {
+      for (UserAgent ua : uas.getList()) {
+        ua.classify();
+      }
+    }
+  }
+
 }
