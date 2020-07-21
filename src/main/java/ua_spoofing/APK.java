@@ -155,8 +155,8 @@ public class APK {
 
   public void findUAs() throws IOException {
     if (decompiled) {
-      OutputHandler.print(OutputHandler.Type.INF,
-          "Looking for user agent...");
+//      OutputHandler.print(OutputHandler.Type.INF,
+//          "Looking for user agent...");
 
       UAFinder uaFinder = new UAFinder(dir);
       uas = uaFinder.find();
