@@ -49,7 +49,7 @@ public class OutputHandler {
 
   public static void printList(UAList l) {
     for (UserAgent ua : l.getList()) {
-      System.out.println("[INF\t] " + ua.toString());
+      System.out.println("[INFO\t] " + ua.toString());
     }
   }
 
