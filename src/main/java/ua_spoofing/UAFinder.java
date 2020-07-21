@@ -59,7 +59,7 @@ public class UAFinder {
               super.visit(n, arg);
               String call = n.getNameAsString();
 
-              if (call.equals("setHeader")) {
+              if (call.equals("setHeader") && n.getArguments().size() > 1) {
                 if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
 //                  OutputHandler.newline();
 //                  OutputHandler.print(OutputHandler.Type.INF,
@@ -70,7 +70,7 @@ public class UAFinder {
                 }
               }
 
-              if (call.equals("addHeader")) {
+              if (call.equals("addHeader") && n.getArguments().size() > 1) {
                 if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
 //                  OutputHandler.newline();
 //                  OutputHandler.print(OutputHandler.Type.INF,
@@ -81,7 +81,7 @@ public class UAFinder {
                 }
               }
 
-              if (call.equals("setParameter")) {
+              if (call.equals("setParameter") && n.getArguments().size() > 1) {
                 if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
 //                  OutputHandler.newline();
 //                  OutputHandler.print(OutputHandler.Type.INF,
@@ -92,7 +92,7 @@ public class UAFinder {
                 }
               }
 
-              if (call.equals("setUserAgentString")) {
+              if (call.equals("setUserAgentString") && n.getArguments().size() > 1) {
                 if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
 //                  OutputHandler.newline();
 //                  OutputHandler.print(OutputHandler.Type.INF,
@@ -103,7 +103,7 @@ public class UAFinder {
                 }
               }
 
-              if (call.equals("setRequestProperty")) {
+              if (call.equals("setRequestProperty") && n.getArguments().size() > 1) {
                 if (n.getArgument(0).toString().equals("\"User-Agent\"")) {
 //                  OutputHandler.newline();
 //                  OutputHandler.print(OutputHandler.Type.INF,
