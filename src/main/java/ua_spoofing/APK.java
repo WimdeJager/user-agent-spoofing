@@ -52,7 +52,7 @@ public class APK {
       this.dir = new File(outputDir);
     } else {
       this.dir = new File(this.file.getParent() + "\\"
-          + FilenameUtils.removeExtension(name));
+          + "uaspoof-" + FilenameUtils.removeExtension(name));
     }
 
     this.decompiled = false;
