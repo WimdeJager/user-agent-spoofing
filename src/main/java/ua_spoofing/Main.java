@@ -1,9 +1,11 @@
 package ua_spoofing;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Scanner;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
@@ -91,6 +93,7 @@ public class Main {
       OutputHandler.print(OutputHandler.Type.ERR,
           "File isProcessed.txt could not be created!");
     }
+
     _processDir(new File(loc), method, log);
   }
 
@@ -98,30 +101,41 @@ public class Main {
       throws IOException, InterruptedException {
 
     for (File f : d.listFiles()) {
-      if (f.isDirectory()) {
+      if (f.isDirectory() && !f.getName().contains("uaspoof")) {
         _processDir(f, m, log);
       }
       else {
-        if (FileUtils.readFileToString(
-            log, Charset.defaultCharset()).contains(f.getPath())) {
-//        if (log.toString().contains("HELLO")) {
-          OutputHandler.print(OutputHandler.Type.INF,
-              "File already processed in previous run!");
-        }
-        else if (FilenameUtils.getExtension(f.getName()).equals("apk")) {
+        if (!isProcessed(f, log) &&
+            FilenameUtils.getExtension(f.getName()).equals("apk")) {
           APK apk = new APK(f, null);
 
           apk.decompile(m);
           apk.findUAs();
 
           FileWriter w = new FileWriter(log, true);
-          w.write(FilenameUtils.separatorsToUnix(f.getPath()) + " \n");
+          w.write(f.getPath() + "\n");
           w.close();
 
           OutputHandler.separator();
         }
       }
     }
+  }
+
+  private static boolean isProcessed(File file, File log) throws
+      FileNotFoundException {
+    Scanner s = new Scanner(log);
+
+    while (s.hasNextLine()) {
+      String line = s.nextLine();
+      if (line.equals(file.getPath())) {
+        s.close();
+        return true;
+      }
+    }
+
+    s.close();
+    return false;
   }
 
 }
