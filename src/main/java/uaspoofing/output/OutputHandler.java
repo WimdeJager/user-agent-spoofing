@@ -1,6 +1,8 @@
-package ua_spoofing;
+package uaspoofing.output;
 
 import com.google.common.base.Strings;
+import uaspoofing.ua.UserAgent;
+import uaspoofing.apk.UAList;
 
 /**
  * Created by wimde on 29-5-2020.

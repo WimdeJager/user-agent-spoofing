@@ -1,7 +1,9 @@
-package ua_spoofing;
+package uaspoofing.main;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FilenameUtils;
+import uaspoofing.output.OutputHandler;
+import uaspoofing.apk.APK;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,9 +11,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-// java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\dataset\Benign-sample-187\a.a.hikidashi.apk
-// java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main D:\wimde\cs\bscproject\dataset\samples\BeanBot\4edab972cc232a2525d6994760f0f71088707164.apk -j
-// java -cp target/user-agent-spoofing-1.0.jar ua_spoofing.Main -j D:\wimde\cs\bscproject\dataset\samples
+// java -cp target/user-agent-spoofing-1.0.jar uaspoofing.main.Main D:\wimde\cs\bscproject\dataset\Benign-sample-187\a.a.hikidashi.apk
+// java -cp target/user-agent-spoofing-1.0.jar uaspoofing.main.Main D:\wimde\cs\bscproject\dataset\samples\BeanBot\4edab972cc232a2525d6994760f0f71088707164.apk -j
+// java -cp target/user-agent-spoofing-1.0.jar uaspoofing.main.Main -j D:\wimde\cs\bscproject\dataset\samples
 
 /**
  * Main class.

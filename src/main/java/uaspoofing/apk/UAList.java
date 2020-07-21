@@ -1,4 +1,6 @@
-package ua_spoofing;
+package uaspoofing.apk;
+
+import uaspoofing.ua.UserAgent;
 
 import java.util.ArrayList;
 

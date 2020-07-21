@@ -1,13 +1,14 @@
-package ua_spoofing;
+package uaspoofing.apk;
 
 import com.blueconic.browscap.ParseException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import uaspoofing.output.OutputHandler;
+import uaspoofing.ua.UAFinder;
+import uaspoofing.ua.UserAgent;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that holds information about an APK file

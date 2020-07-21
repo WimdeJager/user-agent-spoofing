@@ -1,9 +1,9 @@
-package ua_spoofing;
+package uaspoofing.ua;
 
 import com.blueconic.browscap.Capabilities;
 import com.blueconic.browscap.ParseException;
-import com.blueconic.browscap.UserAgentParser;
 import com.blueconic.browscap.UserAgentService;
+import uaspoofing.output.OutputHandler;
 
 import java.io.File;
 import java.io.IOException;

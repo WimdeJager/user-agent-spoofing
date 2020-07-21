@@ -1,8 +1,7 @@
-package ua_spoofing;
+package uaspoofing.ua;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
@@ -10,8 +9,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-
-import ua_spoofing.OutputHandler;
+import uaspoofing.apk.UAList;
+import uaspoofing.output.OutputHandler;
 
 /**
  * Tries to find a User Agent in the .java files that are present in the given (underlying)
