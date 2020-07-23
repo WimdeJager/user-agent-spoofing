@@ -19,8 +19,7 @@ import java.util.Scanner;
  * Main class.
  */
 public class Main {
-  public static void main(String[] args)
-      throws IOException, InterruptedException, ParseException, com.blueconic.browscap.ParseException {
+  public static void main(String[] args) throws IOException {
     APK apk;
     Options options = new Options();
     addOptions(options);
@@ -85,7 +84,7 @@ public class Main {
   }
 
   private static void processDirectory(String loc, String method)
-      throws IOException, InterruptedException, com.blueconic.browscap.ParseException {
+      throws IOException {
     OutputHandler.print(OutputHandler.Type.INF,
         "Directory: " + loc);
 
@@ -98,8 +97,7 @@ public class Main {
     _processDir(new File(loc), method, log);
   }
 
-  private static void _processDir(File d, String m, File log)
-      throws IOException, InterruptedException, com.blueconic.browscap.ParseException {
+  private static void _processDir(File d, String m, File log) {
 
     for (File f : d.listFiles()) {
       if (f.isDirectory() && !f.getName().contains("uaspoof")) {
@@ -116,9 +114,16 @@ public class Main {
           apk.findUAs();
           apk.classifyUAs();
 
-          FileWriter w = new FileWriter(log, true);
-          w.write(f.getPath() + "\n");
-          w.close();
+
+          try {
+            FileWriter w = new FileWriter(log, true);
+            w.write(f.getPath() + "\n");
+            w.close();
+          } catch (IOException e) {
+            OutputHandler.print(OutputHandler.Type.WRN,
+                "Could not write to isProcessed.txt! This file might be " +
+                    "scanned again in a next run.");
+          }
 
           OutputHandler.separator();
         }
@@ -126,9 +131,13 @@ public class Main {
     }
   }
 
-  private static boolean isProcessed(File file, File log) throws
-      FileNotFoundException {
-    Scanner s = new Scanner(log);
+  private static boolean isProcessed(File file, File log) {
+    Scanner s = null;
+    try {
+      s = new Scanner(log);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
 
     while (s.hasNextLine()) {
       String line = s.nextLine();

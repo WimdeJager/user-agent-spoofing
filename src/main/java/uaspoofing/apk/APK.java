@@ -30,14 +30,22 @@ public class APK {
    */
   private String name;
 
+  /**
+   * True if the APK has been decompiled, false otherwise. If the APK was
+   * decompiled, the contents can be found in the File dir.
+   */
   private boolean decompiled;
 
+  /**
+   * The list of User Agents found in this APK. Might be empty if findUAs()
+   * has not been called yet, or if no UAs could be found in this APK.
+   */
   private UAList uas;
 
   /**
    * Constructor
    *
-   * @param file       the location of the APK file
+   * @param file      the location of the APK file
    * @param outputDir location the decompiled files should be placed (null if
    *                  not specified by user).
    */
@@ -67,11 +75,12 @@ public class APK {
    * Decompiles the APK file
    * @param method decompilation method to be used:
    *               - "JADX" to use JADX
-   *               - "AG" or null to use Androguard
+   *               - "AG" to use Androguard
+   *               - null if not specified: use Androguard
    * @throws IOException
    * @throws InterruptedException
    */
-  public void decompile(String method) throws InterruptedException {
+  public void decompile(String method) {
     Runtime rt = Runtime.getRuntime();
 
     if (dir.exists()) {
@@ -106,8 +115,11 @@ public class APK {
         OutputHandler.print(OutputHandler.Type.ERR,
             "There was an error executing JADX. Do you have JADX installed " +
                 "and did you add it to your PATH variable?");
+        e.printStackTrace();
+      } catch (InterruptedException e) {
         OutputHandler.print(OutputHandler.Type.ERR,
-            "Message: " + e.getMessage());
+            "The decompilation process got interrupted!");
+        e.printStackTrace();
       }
 
     } else {
@@ -125,11 +137,15 @@ public class APK {
                 " Androguard installed?");
         OutputHandler.print(OutputHandler.Type.ERR,
             "Message: " + e.getMessage());
+      } catch (InterruptedException e) {
+        OutputHandler.print(OutputHandler.Type.ERR,
+            "The decompilation process got interrupted!");
+        e.printStackTrace();
       }
     }
   }
 
-  public void findUAs() throws IOException {
+  public void findUAs() {
     if (decompiled) {
       UAFinder uaFinder = new UAFinder(dir);
       uas = uaFinder.find();
@@ -142,7 +158,7 @@ public class APK {
     }
   }
 
-  public void classifyUAs() throws IOException, ParseException {
+  public void classifyUAs() {
     if (decompiled) {
       for (UserAgent ua : uas.getList()) {
         ua.classify();

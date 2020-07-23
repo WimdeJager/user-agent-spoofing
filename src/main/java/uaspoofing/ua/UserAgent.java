@@ -21,9 +21,7 @@ public class UserAgent {
     this.location = location;
   }
 
-  public void classify() throws IOException, ParseException {
-    Capabilities fields = new UserAgentService().loadParser().parse(ua);
-
+  public void classify() {
     OutputHandler.newline();
 
     OutputHandler.print(OutputHandler.Type.INF,
@@ -31,19 +29,31 @@ public class UserAgent {
     OutputHandler.print(OutputHandler.Type.INF,
         "File:\t\t" + location.getPath());
 
-    OutputHandler.print(OutputHandler.Type.INF,
-        "Browser:\t\t" + fields.getBrowser());
-    OutputHandler.print(OutputHandler.Type.INF,
-        "Browser type:\t\t" + fields.getBrowserType());
-    OutputHandler.print(OutputHandler.Type.INF,
-        "Browser version:\t" + fields.getBrowserMajorVersion());
-    OutputHandler.print(OutputHandler.Type.INF,
-        "Device type:\t\t" + fields.getDeviceType());
-    OutputHandler.print(OutputHandler.Type.INF,
-        "Platform:\t\t" + fields.getPlatform());
-    OutputHandler.print(OutputHandler.Type.INF,
-        "Platform version:\t" + fields.getPlatformVersion());
-    OutputHandler.newline();
+    Capabilities fields = null;
+
+    try {
+      fields = new UserAgentService().loadParser().parse(ua);
+
+      OutputHandler.print(OutputHandler.Type.INF,
+          "Browser:\t\t" + fields.getBrowser());
+      OutputHandler.print(OutputHandler.Type.INF,
+          "Browser type:\t\t" + fields.getBrowserType());
+      OutputHandler.print(OutputHandler.Type.INF,
+          "Browser version:\t" + fields.getBrowserMajorVersion());
+      OutputHandler.print(OutputHandler.Type.INF,
+          "Device type:\t\t" + fields.getDeviceType());
+      OutputHandler.print(OutputHandler.Type.INF,
+          "Platform:\t\t" + fields.getPlatform());
+      OutputHandler.print(OutputHandler.Type.INF,
+          "Platform version:\t" + fields.getPlatformVersion());
+      OutputHandler.newline();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ParseException e) {
+      OutputHandler.print(OutputHandler.Type.WRN,
+          "User Agent could not be parsed!");
+    }
   }
 
   public String toString() {

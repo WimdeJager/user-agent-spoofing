@@ -1,6 +1,7 @@
 package uaspoofing.ua;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.github.javaparser.ParseProblemException;
@@ -27,12 +28,12 @@ public class UAFinder {
     this.uas = new UAList();
   }
 
-  public UAList find() throws IOException {
+  public UAList find() {
     _find(dir);
     return uas;
   }
 
-  private void _find(File d) throws IOException {
+  private void _find(File d) {
 //    OutputHandler.print(OutputHandler.Type.INF,
 //        "Looking in dir " + d.getPath());
 
@@ -120,6 +121,9 @@ public class UAFinder {
         catch (ParseProblemException e) {
           OutputHandler.print(OutputHandler.Type.WRN,
               "File " + f.getPath() + " could not be parsed!");
+        } catch (FileNotFoundException e) {
+          OutputHandler.print(OutputHandler.Type.WRN,
+              "File " + f.getPath() + " could not be found!");
         }
       }
     }
