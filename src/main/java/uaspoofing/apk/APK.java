@@ -150,8 +150,8 @@ public class APK {
       UAFinder uaFinder = new UAFinder(dir);
       uas = uaFinder.find();
 
-//      OutputHandler.printList(uas);
-
+      OutputHandler.print(OutputHandler.Type.INF,
+          "There were " + uas.size() + " User-Agents found.");
     } else {
       OutputHandler.print(OutputHandler.Type.ERR,
           "Application was not decompiled yet!");
