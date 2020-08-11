@@ -18,16 +18,15 @@ public class OutputHandler {
   public static void print(Type t, String msg) {
     switch (t) {
       case INF:
-        System.out.println("[INFO\t] " + msg);
+        System.out.print("\n[INFO\t] " + msg);
         break;
       case WRN:
-        System.out.println("[WARN\t] " + msg);
+        System.out.print("\n[WARNING] " + msg);
         break;
       case ERR:
-        System.err.println("[ERROR\t] " + msg);
+        System.err.print("\n[ERROR\t] " + msg);
         break;
       default:
-        System.err.println("unknown print type!");
     }
   }
 
