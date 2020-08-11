@@ -7,7 +7,6 @@ import uaspoofing.output.OutputHandler;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Created by wimde on 11-6-2020.

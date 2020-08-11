@@ -73,13 +73,6 @@ public class APK {
 
   /**
    * Decompiles the APK file
-   *
-   * @param method decompilation method to be used:
-   *               - "JADX" to use JADX
-   *               - "AG" to use Androguard
-   *               - null if not specified: use Androguard
-   * @throws IOException
-   * @throws InterruptedException
    */
   public void decompile() {
     Runtime rt = Runtime.getRuntime();
@@ -122,7 +115,6 @@ public class APK {
           "The decompilation process got interrupted!");
       e.printStackTrace();
     }
-
   }
 
   public void findUAs() {
