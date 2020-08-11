@@ -41,9 +41,6 @@ public class UAFinder {
   }
 
   private void _find(File d) {
-//    OutputHandler.print(OutputHandler.Type.INF,
-//        "Looking in dir " + d.getPath());
-
     if (d.getName().contains("android")
         || d.getName().contains("google")
         || d.getName().contains("apache")) {
@@ -56,22 +53,10 @@ public class UAFinder {
       } else {
         currentFile = f;
 
-//        OutputHandler.print(OutputHandler.Type.INF,
-//            "Scanning file " + f.getPath());
-
         try {
           CompilationUnit cu = StaticJavaParser.parse(f);
           MethodCallVisitor mv = new MethodCallVisitor();
           mv.visit(cu, null);
-
-//          if (!varNames.isEmpty()) {
-//            OutputHandler.print(OutputHandler.Type.INF,
-//                "Variables possibly containing UA:");
-//            for (String s : varNames) {
-//              System.out.print(s + ",");
-//            }
-//            System.out.println();
-//          }
 
           if (!varNames.isEmpty()) {
             AssignVisitor nv = new AssignVisitor();
@@ -119,13 +104,16 @@ public class UAFinder {
           (call.equals("setHeader")
               || call.equals("addHeader")
               || call.equals("setParameter")
-              || call.equals("setUserAgentString")
               || call.equals("setRequestProperty")
           )
               && e.getArguments().size() > 1
               && e.getArgument(0).toString().equals("\"User-Agent\"")
           ) {
         getUAFromExpression(e.getArgument(1));
+      }
+
+      else if (call.equals("setUserAgentString")) {
+        getUAFromExpression(e.getArgument(0));
       }
 
     }
@@ -135,12 +123,8 @@ public class UAFinder {
     @Override
     public void visit(AssignExpr e, Object arg) {
       super.visit(e, arg);
-//      OutputHandler.print(OutputHandler.Type.INF,
-//          "Handling assignment " + e + "...");
       int i = varNames.indexOf(e.getTarget().toString());
       if (i >= 0) {
-//        OutputHandler.print(OutputHandler.Type.INF,
-//            "Found UA assignment: " + e);
         getUAFromExpression(e.getValue());
       }
     }
@@ -148,8 +132,6 @@ public class UAFinder {
     @Override
     public void visit(VariableDeclarationExpr e, Object arg) {
       super.visit(e, arg);
-//      OutputHandler.print(OutputHandler.Type.INF,
-//          "Handling assignment " + e + "...");
 
       analyzeDeclarators(e.getVariables());
     }
@@ -157,8 +139,6 @@ public class UAFinder {
     @Override
     public void visit(FieldDeclaration e, Object arg) {
       super.visit(e, arg);
-//      OutputHandler.print(OutputHandler.Type.INF,
-//          "Handling assignment " + e + "...");
 
       analyzeDeclarators(e.getVariables());
     }
@@ -168,8 +148,6 @@ public class UAFinder {
         if (v.getInitializer().isPresent()) {
           int i = varNames.indexOf(v.getName().toString());
           if (i >= 0) {
-//            OutputHandler.print(OutputHandler.Type.INF,
-//                "------------------> Found UA assignment!");
             getUAFromExpression(v.getInitializer().get());
           }
         }
