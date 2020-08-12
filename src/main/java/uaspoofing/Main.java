@@ -91,6 +91,8 @@ public class Main {
     } catch (ParseException e) {
       OutputHandler.print(OutputHandler.Type.ERR,
           "Parsing failed!" + e.getMessage());
+      e.printStackTrace();
+      System.exit(0);
     }
   }
 
