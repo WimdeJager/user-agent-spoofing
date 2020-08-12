@@ -25,30 +25,49 @@ public class Main {
 
     CommandLineParser parser = new DefaultParser();
 
+    boolean correctInput = true;
+
     try {
       CommandLine cmd = parser.parse(options, args);
 
       if (cmd.getArgs().length == 1) {
-        String location = cmd.getArgs()[0];
-        String outputDir;
-
-        if (new File(location).isDirectory()) {
-          OutputHandler.dirMode();
-
-          processDirectory(location);
+        // if user specified a file or directory
+        File location = new File(cmd.getArgs()[0]);
+        if (!location.exists()) {
+          // throw exception if input file does not exist
+          throw new FileNotFoundException("APK file or directory does not " +
+              "exist!");
         }
-        else if (new File(location).isFile()) {
+
+        if (location.isDirectory()) {
+          // DIRECTORY MODE
           if (cmd.hasOption("o")) {
-            outputDir = cmd.getOptionValue("o");
+            // output directory cannot be specified in directory mode
+            correctInput = false;
+          } else {
+            // start processing APKs
+            OutputHandler.dirMode();
+            processDirectory(location);
+          }
+        }
+        else if (location.isFile()) {
+          // FILE MODE
+          File outputDir;
+
+          if (cmd.hasOption("o")) {
+            outputDir = new File(cmd.getOptionValue("o"));
           } else {
             OutputHandler.print(OutputHandler.Type.INF,
                 "No output directory specified, using default.");
+
+            // set outputDir to null to indicate default directory
             outputDir = null;
 
             OutputHandler.fileMode();
           }
 
-          APK apk = new APK(new File(location), outputDir);
+          // process APK
+          APK apk = new APK(location, outputDir);
           apk.decompile();
           apk.findUAs();
           apk.classifyUAs();
@@ -56,9 +75,16 @@ public class Main {
       }
 
       else {
+        // user did not specify an input file
+        correctInput = false;
+      }
+
+      if (!correctInput) {
+        // print 'usage: ...'
         HelpFormatter f = new HelpFormatter();
         f.printHelp(
-            "uaspoofing.Main (APK File | APK directory) [options]",
+            "uaspoofing.Main <input file> [options]\n" +
+                "Note: output directory can only be specified in file mode.",
             options);
       }
 
@@ -72,38 +98,53 @@ public class Main {
     options.addOption("o", true, "Output directory");
   }
 
-  private static void processDirectory(String loc)
-      throws IOException {
+  private static void processDirectory(File loc) {
+    // process directory recursively
     OutputHandler.print(OutputHandler.Type.INF,
-        "Directory: " + loc);
+        "Directory: " + loc.getName());
 
+    // create file isProcessed.txt to keep track of APKs that have been
+    // processed
     File log = new File(loc + "\\isProcessed.txt");
-    if (!log.exists() && !log.createNewFile()) {
-      OutputHandler.print(OutputHandler.Type.ERR,
-          "File isProcessed.txt could not be created!");
+    try {
+      if (!log.exists() && !log.createNewFile()) {
+        OutputHandler.print(OutputHandler.Type.ERR,
+            "File isProcessed.txt could not be created!");
+      }
+    } catch (IOException e) {
+      // createNewFile() failed
+      e.printStackTrace();
     }
 
-    _processDir(new File(loc), log);
+    _processDir(loc, log);
   }
 
   private static void _processDir(File d, File log) {
+    // helper function for processDir
 
     for (File f : d.listFiles()) {
+      // loop over all files in directory
       if (f.isDirectory() && !f.getName().contains("uaspoof")) {
+        // if file is directory, recurse
+        // if file prefix is 'uaspoof-...', directory is an output directory
+        // for a previously processed APK
         OutputHandler.print(OutputHandler.Type.INF,
             "Directory: " + f.getPath());
         _processDir(f, log);
       }
+
       else {
         if (!isProcessed(f, log) &&
             FilenameUtils.getExtension(f.getName()).equals("apk")) {
-          APK apk = new APK(f, null);
+          // if file has not been previously processed and file is indeed an
+          // APK file, process APK
 
+          APK apk = new APK(f, null);
           apk.decompile();
           apk.findUAs();
           apk.classifyUAs();
 
-
+          // write APK name to isProcessed.txt
           try {
             FileWriter w = new FileWriter(log, true);
             w.write(f.getPath() + "\n");
@@ -121,6 +162,7 @@ public class Main {
   }
 
   private static boolean isProcessed(File file, File log) {
+    // check if APK is in isProcessed.txt
     Scanner s = null;
     try {
       s = new Scanner(log);

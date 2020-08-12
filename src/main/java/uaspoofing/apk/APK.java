@@ -49,7 +49,7 @@ public class APK {
    * @param outputDir location the decompiled files should be placed (null if
    *                  not specified by user).
    */
-  public APK(File file, String outputDir) {
+  public APK(File file, File outputDir) {
     this.file = file;
     if (!file.exists() || file.isDirectory()) {
       OutputHandler.print(OutputHandler.Type.ERR,
@@ -59,7 +59,7 @@ public class APK {
 
     this.name = FilenameUtils.getName(file.getPath());
     if (outputDir != null) {
-      this.dir = new File(outputDir);
+      this.dir = outputDir;
     } else {
       this.dir = new File(this.file.getParent() + "\\"
           + "uaspoof-" + FilenameUtils.removeExtension(name));
