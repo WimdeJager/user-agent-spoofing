@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import uaspoofing.output.OutputHandler;
 import uaspoofing.ua.UAFinder;
+import uaspoofing.ua.UAList;
 
 import java.io.File;
 import java.io.IOException;

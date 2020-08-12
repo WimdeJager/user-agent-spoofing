@@ -1,4 +1,4 @@
-package uaspoofing.apk;
+package uaspoofing.ua;
 
 import uaspoofing.ua.UserAgent;
 
@@ -33,14 +33,14 @@ public class UAList {
    * Returns number of UAs in list
    * @return size of list
    */
-  int size() {
+  public int size() {
     return list.size();
   }
 
   /**
    * Call classifyAll on all UAs in ```list```
    */
-  void classifyAll() {
+  public void classifyAll() {
     for (UserAgent ua : list) {
       ua.classify();
     }

@@ -12,7 +12,6 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import uaspoofing.apk.UAList;
 import uaspoofing.output.OutputHandler;
 
 /**

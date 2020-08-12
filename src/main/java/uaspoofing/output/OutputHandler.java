@@ -1,8 +1,6 @@
 package uaspoofing.output;
 
 import com.google.common.base.Strings;
-import uaspoofing.ua.UserAgent;
-import uaspoofing.apk.UAList;
 
 /**
  * Handles all output to System.out
