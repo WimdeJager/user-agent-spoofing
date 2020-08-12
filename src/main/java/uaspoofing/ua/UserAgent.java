@@ -9,18 +9,33 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by wimde on 11-6-2020.
+ * Class representing a User-Agent string
  */
 public class UserAgent {
 
+  /**
+   * String containing the UA
+   */
   private String ua;
+
+  /**
+   * File that it was found in
+   */
   private File location;
 
+  /**
+   * Constructor
+   * @param ua the UA
+   * @param location File that UA was found in
+   */
   public UserAgent(String ua, File location) {
     this.ua       = ua;
     this.location = location;
   }
 
+  /**
+   * Try to retrieve information about UA
+   */
   public void classify() {
     OutputHandler.newline();
 
@@ -33,8 +48,9 @@ public class UserAgent {
 
     try {
       OutputHandler.print(OutputHandler.Type.INF, "parsing...");
-      fields = new UserAgentService().loadParser().parse(ua);
 
+      // use browscap to retrieve information
+      fields = new UserAgentService().loadParser().parse(ua);
 
       OutputHandler.print(OutputHandler.Type.INF,
           "Browser:\t\t" + fields.getBrowser());
@@ -50,6 +66,7 @@ public class UserAgent {
           "Platform version:\t" + fields.getPlatformVersion());
       OutputHandler.newline();
 
+      // classify
       if (!fields.getDeviceType().equals("Mobile Phone")
           && !fields.getDeviceType().equals("Unknown")) {
         OutputHandler.print(OutputHandler.Type.INF,
@@ -94,10 +111,6 @@ public class UserAgent {
       OutputHandler.print(OutputHandler.Type.WRN,
           "User Agent could not be parsed!");
     }
-  }
-
-  public String toString() {
-    return String.format("\"%s\" in file %s", ua, location.getPath());
   }
 
 }
