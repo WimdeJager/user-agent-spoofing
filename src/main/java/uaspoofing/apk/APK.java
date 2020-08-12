@@ -26,17 +26,6 @@ public class APK {
   private File dir;
 
   /**
-   * Name of the file (without path)
-   */
-  private String name;
-
-  /**
-   * True if the APK has been decompiled, false otherwise. If the APK was
-   * decompiled, the contents can be found in the File dir.
-   */
-  private boolean decompiled;
-
-  /**
    * The list of User Agents found in this APK. Might be empty if findUAs()
    * has not been called yet, or if no UAs could be found in this APK.
    */
@@ -47,7 +36,7 @@ public class APK {
    *
    * @param file      the location of the APK file
    * @param outputDir location the decompiled files should be placed (null if
-   *                  not specified by user).
+   *                  not specified by user, or if in directory mode).
    */
   public APK(File file, File outputDir) {
     this.file = file;
@@ -57,27 +46,27 @@ public class APK {
       System.exit(1);
     }
 
-    this.name = FilenameUtils.getName(file.getPath());
+    // initialize outputDir
     if (outputDir != null) {
+      // if not null, outputDir was specified by user
       this.dir = outputDir;
     } else {
+      // else, give default name: 'uaspoof-<APK name>'
       this.dir = new File(this.file.getParent() + "\\"
-          + "uaspoof-" + FilenameUtils.removeExtension(name));
+          + "uaspoof-"
+          + FilenameUtils.removeExtension(FilenameUtils.getName(file.getPath())));
     }
-
-    this.decompiled = false;
 
     this.uas = new UAList();
   }
 
 
   /**
-   * Decompiles the APK file
+   * Decompiles the APK file using JADX.
    */
   public void decompile() {
-    Runtime rt = Runtime.getRuntime();
-
     if (dir.exists()) {
+      // if output directory exists, clean directory
       try {
         FileUtils.cleanDirectory(dir);
       } catch (IOException e) {
@@ -85,9 +74,11 @@ public class APK {
             "There was an error cleaning the output directory "
                 + dir.getPath() + ", there might be another program using the" +
                 " directory.");
+        e.printStackTrace();
         return;
       }
     } else {
+      // dir does not exist, create directory
       if (!dir.mkdirs()) {
         OutputHandler.print(OutputHandler.Type.ERR,
             "Could not create directory " + dir.getPath());
@@ -98,43 +89,41 @@ public class APK {
     OutputHandler.print(OutputHandler.Type.INF,
         "Scanning " + file.getName() + " ...");
 
-    Process pr;
     try {
-      pr = rt.exec("cmd /c target\\classes\\jadx-1.1.0\\bin\\jadx -r -ds " + dir.getPath
-          () + " "
-          + file.getPath());
-      pr.waitFor();
-      decompiled = true;
+      // execute JADX
+      Runtime rt = Runtime.getRuntime();
+      Process pr = rt.exec(
+          "cmd /c target\\classes\\jadx-1.1.0\\bin\\jadx -r -ds "
+              + dir.getPath() + " " + file.getPath());
+      pr.waitFor(); // wait for JADX to return
     } catch (IOException e) {
       OutputHandler.print(OutputHandler.Type.ERR,
-          "There was an error executing JADX. Do you have JADX installed " +
-              "and did you add it to your PATH variable?");
+          "There was an error during the decompilation process");
       e.printStackTrace();
     } catch (InterruptedException e) {
       OutputHandler.print(OutputHandler.Type.ERR,
-          "The decompilation process got interrupted!");
+          "There was an error during the decompilation process");
       e.printStackTrace();
     }
   }
 
+  /**
+   * Creates ```UAFinder``` for a directory, and stores the result in ```uas```
+   */
   public void findUAs() {
-    if (decompiled) {
-      UAFinder uaFinder = new UAFinder(dir);
-      uas = uaFinder.find();
+    UAFinder uaFinder = new UAFinder(dir);
+    uas = uaFinder.find();
 
-      OutputHandler.print(OutputHandler.Type.INF,
-          "There were " + uas.size() + " User-Agents found.");
-    } else {
-      OutputHandler.print(OutputHandler.Type.ERR,
-          "Application was not decompiled yet!");
-    }
+    OutputHandler.print(OutputHandler.Type.INF,
+        "There were " + uas.size() + " User-Agents found.");
   }
 
+  /**
+   * Classify each UA in ```uas```
+   */
   public void classifyUAs() {
-    if (decompiled) {
-      for (UserAgent ua : uas.getList()) {
-        ua.classify();
-      }
+    for (UserAgent ua : uas.getList()) {
+      ua.classify();
     }
   }
 
