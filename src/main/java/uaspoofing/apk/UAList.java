@@ -5,34 +5,45 @@ import uaspoofing.ua.UserAgent;
 import java.util.ArrayList;
 
 /**
- * Created by wimde on 17-7-2020.
+ * Wrapper for ArrayList containing UserAgents
  */
 public class UAList {
 
+  /**
+   * The list of ```UserAgent```s
+   */
   private ArrayList<UserAgent> list;
 
+  /**
+   * Constructor, creates ArrayList
+   */
   public UAList() {
     this.list = new ArrayList<UserAgent>();
   }
 
-  public void print() {
-
-  }
-
+  /**
+   * Add a UA to list
+   * @param ua the UA to be added
+   */
   public void add(UserAgent ua) {
     list.add(ua);
   }
 
-  public int size() {
+  /**
+   * Returns number of UAs in list
+   * @return size of list
+   */
+  int size() {
     return list.size();
   }
 
-  public ArrayList<UserAgent> getList() {
-    return list;
-  }
-
-  public void removeDuplicates() {
-
+  /**
+   * Call classifyAll on all UAs in ```list```
+   */
+  void classifyAll() {
+    for (UserAgent ua : list) {
+      ua.classify();
+    }
   }
 
 }

@@ -48,10 +48,4 @@ public class OutputHandler {
         "=================================DIRECTORY MODE=================================");
   }
 
-  public static void printList(UAList l) {
-    for (UserAgent ua : l.getList()) {
-      System.out.println("[INFO\t] " + ua.toString());
-    }
-  }
-
 }

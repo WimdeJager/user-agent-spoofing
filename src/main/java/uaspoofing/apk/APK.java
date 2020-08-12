@@ -1,11 +1,9 @@
 package uaspoofing.apk;
 
-import com.blueconic.browscap.ParseException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import uaspoofing.output.OutputHandler;
 import uaspoofing.ua.UAFinder;
-import uaspoofing.ua.UserAgent;
 
 import java.io.File;
 import java.io.IOException;
@@ -122,9 +120,7 @@ public class APK {
    * Classify each UA in ```uas```
    */
   public void classifyUAs() {
-    for (UserAgent ua : uas.getList()) {
-      ua.classify();
-    }
+    uas.classifyAll();
   }
 
 }
