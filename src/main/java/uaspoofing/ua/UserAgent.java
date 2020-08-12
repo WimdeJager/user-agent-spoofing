@@ -52,20 +52,6 @@ public class UserAgent {
       // use browscap to retrieve information
       fields = new UserAgentService().loadParser().parse(ua);
 
-      OutputHandler.print(OutputHandler.Type.INF,
-          "Browser:\t\t" + fields.getBrowser());
-      OutputHandler.print(OutputHandler.Type.INF,
-          "Browser type:\t\t" + fields.getBrowserType());
-      OutputHandler.print(OutputHandler.Type.INF,
-          "Browser version:\t" + fields.getBrowserMajorVersion());
-      OutputHandler.print(OutputHandler.Type.INF,
-          "Device type:\t\t" + fields.getDeviceType());
-      OutputHandler.print(OutputHandler.Type.INF,
-          "Platform:\t\t" + fields.getPlatform());
-      OutputHandler.print(OutputHandler.Type.INF,
-          "Platform version:\t" + fields.getPlatformVersion());
-      OutputHandler.newline();
-
       // classify
       if (!fields.getDeviceType().equals("Mobile Phone")
           && !fields.getDeviceType().equals("Unknown")) {
@@ -96,8 +82,6 @@ public class UserAgent {
           OutputHandler.print(OutputHandler.Type.INF,
               "Platform version could not be parsed!");
         }
-
-
       }
 
       else {
