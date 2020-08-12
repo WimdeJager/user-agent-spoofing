@@ -5,16 +5,24 @@ import uaspoofing.ua.UserAgent;
 import uaspoofing.apk.UAList;
 
 /**
- * Created by wimde on 29-5-2020.
+ * Handles all output to System.out
  */
 public class OutputHandler {
 
+  /**
+   * Types of output (INFO, WARNING or ERROR)
+   */
   public enum Type {
     INF,
     WRN,
     ERR
   }
 
+  /**
+   * Print to System.out
+   * @param t type of output (INFO, WARNING or ERROR)
+   * @param msg message to be printed
+   */
   public static void print(Type t, String msg) {
     switch (t) {
       case INF:
@@ -30,19 +38,31 @@ public class OutputHandler {
     }
   }
 
+  /**
+   * Print newline
+   */
   public static void newline() {
     print(Type.INF, "");
   }
 
+  /**
+   * Print separator (80 times '=')
+   */
   public static void separator() {
     print(Type.INF, Strings.repeat("=", 80));
   }
 
+  /**
+   * Indicate File mode
+   */
   public static void fileMode() {
     print(Type.INF,
         "==================================FILE MODE=====================================");
   }
 
+  /**
+   * Indicate Directory mode
+   */
   public static void dirMode() {
     print(Type.INF,
         "=================================DIRECTORY MODE=================================");
