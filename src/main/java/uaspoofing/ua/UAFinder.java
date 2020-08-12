@@ -97,8 +97,9 @@ public class UAFinder {
         }
 
         catch (ParseProblemException e) {
-          OutputHandler.print(OutputHandler.Type.WRN,
-              "File " + f.getPath() + " could not be parsed!");
+          // File could not be parsed, probably due to an error during
+          // decompilation. This is not a problem, and the user does not need
+          // to know about this.
         } catch (FileNotFoundException e) {
           OutputHandler.print(OutputHandler.Type.WRN,
               "File " + f.getPath() + " could not be found!");
