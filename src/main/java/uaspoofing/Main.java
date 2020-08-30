@@ -35,6 +35,8 @@ public class Main {
         File location = new File(cmd.getArgs()[0]);
         if (!location.exists()) {
           // throw exception if input file does not exist
+          OutputHandler.print(OutputHandler.Type.ERR,
+              "File was not found! ");
           throw new FileNotFoundException("APK file or directory does not " +
               "exist!");
         }
@@ -142,9 +144,27 @@ public class Main {
           // APK file, process APK
 
           APK apk = new APK(f, null);
+
+          long start, end;
+//
+//          start = System.currentTimeMillis();
           apk.decompile();
+//          end = System.currentTimeMillis();
+//          OutputHandler.print(OutputHandler.Type.INF,
+//              "Phase 1: " + (end - start));
+//
+//          start = System.currentTimeMillis();
           apk.findUAs();
+//          end = System.currentTimeMillis();
+//          OutputHandler.print(OutputHandler.Type.INF,
+//              "Phase 2: " + (end - start));
+
+
+//          start = System.currentTimeMillis();
           apk.classifyUAs();
+//          end = System.currentTimeMillis();
+//          OutputHandler.print(OutputHandler.Type.INF,
+//              "Phase 3: " + (end - start));
 
           // write APK name to isProcessed.txt
           try {

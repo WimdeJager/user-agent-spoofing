@@ -95,11 +95,14 @@ public class APK {
           "cmd /c target\\classes\\jadx-1.1.0\\bin\\jadx -r -ds "
               + dir.getPath() + " " + file.getPath());
       pr.waitFor(); // wait for JADX to return
-    } catch (IOException e) {
+    }
+
+    catch (IOException e) {
       OutputHandler.print(OutputHandler.Type.ERR,
           "There was an error during the decompilation process");
       e.printStackTrace();
-    } catch (InterruptedException e) {
+    }
+    catch (InterruptedException e) {
       OutputHandler.print(OutputHandler.Type.ERR,
           "There was an error during the decompilation process");
       e.printStackTrace();

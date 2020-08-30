@@ -56,14 +56,14 @@ public class UserAgent {
       if (!fields.getDeviceType().equals("Mobile Phone")
           && !fields.getDeviceType().equals("Unknown")) {
         OutputHandler.print(OutputHandler.Type.INF,
-            "POTENTIAL THREAT: UA does not come from a mobile phone!" +
+            "MALICIOUS: UA does not come from a mobile phone!" +
                 " (Device type: " + fields.getDeviceType() + ")");
       }
 
       else if (!fields.getPlatform().equals("Android")
           && !fields.getPlatform().equals("Unknown")) {
         OutputHandler.print(OutputHandler.Type.INF,
-            "POTENTIAL THREAT: UA does not come from an Android device!" +
+            "MALICIOUS: UA does not come from an Android device!" +
                 " (Platform: " + fields.getPlatform() + ")");
       }
 
@@ -73,7 +73,7 @@ public class UserAgent {
           double version = Double.parseDouble(fields.getPlatformVersion());
           if (version < 4.0) {
             OutputHandler.print(OutputHandler.Type.INF,
-                "POTENTIAL THREAT: UA comes from old Android version!");
+                "MALICIOUS: UA comes from old Android version!");
           } else {
             OutputHandler.print(OutputHandler.Type.INF,
                 "No threats found.");
